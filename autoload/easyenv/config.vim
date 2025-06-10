@@ -1,50 +1,33 @@
-function! easyenv#config#Create() abort
-    try
-        let l:file = easyenv#config#Get()
-        call easyenv#file#CheckExists(l:file)
-    catch /*./
-        echom 'EasyEnv: ' . v:exception
-    endtry
+function! easyenv#config#Create(path)
+    call writefile(easyenv#json#Encode(g:easyenv_dotfile_default),a:path)
+    echo 'EasyEnv: File created'
 endfunction
 
-" function! easyenv#config#Create() abort
-"     let l:dir = easyenv#config#Get()
-" 
-"     if !filereadable(l:dir)
-"         call writefile(split(json_encode(g:easyenv_dotfile_default),'\n'), l:dir)
-"         echom g:easyenv_dotfile_config .' file created at '  . l:dir
-"     else
-"         echom g:easyenv_dotfile_config .' file exists at '  . l:dir
-"     endif
-" endfunction
-" 
-function! easyenv#config#Get() abort
+function! easyenv#config#Load(path) abort
+    let l:data = easyenv#config#Parse(a:path)
+    if has_key(l:data, 'environment')
+        call easyenv#config#Set(l:data.environment)
+    else
+        echoerr "No 'environment' key found in .easyenv.json"
+    endif
+endfunction
+
+function! easyenv#config#Set(data) abort
+    for [key, val] in items(a:data)
+        if key =~# '^\w\+$'
+            execute 'let $' . key . ' = ' . string(val)
+        else
+            echoerr 'Invalid environment variable key: ' . key
+        endif
+    endfor
+endfunction
+
+function! easyenv#config#Get()
     let l:manifest = easyenv#GetManifestFile() 
     return get(l:manifest,'root',getcwd()) . '/' . g:easyenv_dotfile_config
 endfunction
 
-" function! easyenv#config#Load() abort
-"     let l:file = expand(easyenv#config#Get())
-"     if filereadable(l:file)
-"         let l:json = join(readfile(l:file), "\n")
-"         let l:data = json_decode(l:json)
-" 
-"         if has_key(l:data, 'environment')
-"             let g:easy_env = l:data.environment
-"         else
-"             echoerr "No 'environment' key found in .easyops.json"
-"         endif
-"     endif
-" endfunction
-" 
-" function! easyops#command#GetEnv() abort
-"     call easyops#config#LoadEasyOpsConfig()
-"     let l:env_parts = []
-" 
-"     if exists('g:easyops_env')
-"         for [key, val] in items(g:easyops_env)
-"             execute 'let $' . key .' = ' . shellescale(val,1)
-"         endfor
-"     endif
-"     return join(l:env_parts, ' ')
-" endfunction
+function! easyenv#config#Parse(path)
+    let l:file = readfile(a:path)
+    return easyenv#json#Decode(l:file)
+endfunction

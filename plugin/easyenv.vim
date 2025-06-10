@@ -4,8 +4,7 @@ endif
 
 let g:easyenv_loaded=1
 
-" command! EasyEnv call :help
-
+command! EasyEnv call easyenv#Execute()
 
 " ***** Default Configurations *****
 let g:easyenv_dotfile_config    = '.easyenv.json'
