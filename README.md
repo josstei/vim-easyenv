@@ -14,11 +14,21 @@
 ## Getting Started
 
 1. **Install the Plugin**  
-   Use your favorite Vim plugin manager. For example, with [vim-plug](https://github.com/junegunn/vim-plug):
+   Use your favorite Vim plugin manager.
+   ### Using [vim-plug](https://github.com/junegunn/vim-plug):
 
    ```vim
    Plug 'josstei/vim-easyenv'
    ```
+   ### Using [packer.nvim](https://github.com/wbthomason/packer.nvim) (Lua)
+  
+   ```lua
+   use 'josstei/vim-easyenv'
+   ```
+
+After installation, restart Vim/Neovim and run `:PlugInstall`, `:PackerSync`, or the appropriate command for your plugin manager.
+
+---
 
 2. **Initialize in Your Project**  
    In your project root, run in Vim:
