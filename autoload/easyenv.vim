@@ -16,11 +16,10 @@ function! easyenv#GetManifestFile() abort
     return {}
 endfunction
 
-function! easyenv#Execute() abort
-    let l:path = easyenv#config#Get()
-    if filereadable(l:path)
-        call easyenv#config#Load(l:path)
-    else
-        call easyenv#config#Create(l:path)
+function! easyenv#Execute(command) abort
+    if a:command ==# 'Load'
+        call easyenv#config#Load()
+    elseif a:command ==# 'Create'
+        call easyenv#config#Create()
     endif
 endfunction

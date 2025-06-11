@@ -1,15 +1,29 @@
-function! easyenv#config#Create(path)
-    call writefile(easyenv#json#Encode(g:easyenv_dotfile_default),a:path)
+function! easyenv#config#Create()
+    let l:path = easyenv#config#Path()
+    if filereadable(l:path)
+        echoerr 'EasyEnv: File Already Exists'
+        return
+    endif
+
+    call writefile(easyenv#json#Encode(g:easyenv_dotfile_default),l:path)
     echo 'EasyEnv: File created'
 endfunction
 
-function! easyenv#config#Load(path) abort
-    let l:data = easyenv#config#Parse(a:path)
-    if has_key(l:data, 'environment')
-        call easyenv#config#Set(l:data.environment)
-    else
-        echoerr "No 'environment' key found in .easyenv.json"
+function! easyenv#config#Load() abort
+    let l:path = easyenv#config#Path()
+
+    if !filereadable(l:path)
+        echo 'EasyEnv: File Missing'
     endif
+
+    let l:data = easyenv#config#Parse(l:path)
+
+    if !has_key(l:data, 'environment')
+        echoerr "No 'environment' key found in .easyenv.json"
+    endif 
+
+    call easyenv#config#Set(l:data.environment)
+    echo 'EasyEnv: File Loaded'
 endfunction
 
 function! easyenv#config#Set(data) abort
@@ -17,12 +31,16 @@ function! easyenv#config#Set(data) abort
         if key =~# '^\w\+$'
             execute 'let $' . key . ' = ' . string(val)
         else
-            echoerr 'Invalid environment variable key: ' . key
+            echoerr 'Invalid environment variable key: ' . string(key)
         endif
     endfor
 endfunction
 
-function! easyenv#config#Get()
+function! easyenv#config#Unset() abort
+
+endfunction
+
+function! easyenv#config#Path()
     let l:manifest = easyenv#GetManifestFile() 
     return get(l:manifest,'root',getcwd()) . '/' . g:easyenv_dotfile_config
 endfunction
