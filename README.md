@@ -1,6 +1,6 @@
+![Stable](https://img.shields.io/badge/status-active_development-orange) ![License](https://img.shields.io/badge/license-MIT-blue)
 # vim-easyenv
-
-**vim-easyenv** is a lightweight Vim plugin for easily managing environment variables for your projects using a simple JSON configuration file. It automatically detects the root of your project based on common manifest files (like `package.json`, `pyproject.toml`, `pom.xml`, and more) and allows you to define environment variables for your project in a dedicated `.easyenv.json` file. These variables can then be loaded and unset with simple Vim commands, making it easier to keep project-specific environment variables isolated and under version control.
+**vim-easyenv** is a lightweight Vim/Neovim plugin for easily managing environment variables for your projects using a simple JSON configuration file. It automatically detects the root of your project based on common manifest files (like `package.json`, `pyproject.toml`, `pom.xml`, and more) and allows you to define environment variables for your project in a dedicated `.easyenv.json` file. These variables can then be loaded and unset with simple Vim commands, making it easier to keep project-specific environment variables isolated and under version control.
 
 ## Features
 
