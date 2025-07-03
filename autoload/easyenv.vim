@@ -21,5 +21,7 @@ function! easyenv#Execute(command) abort
         call easyenv#config#Load()
     elseif a:command ==# 'Create'
         call easyenv#config#Create()
+    elseif a:command ==# 'Clear'
+        call easyenv#config#Clear()
     endif
 endfunction

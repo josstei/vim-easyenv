@@ -13,6 +13,15 @@ function! easyenv#config#Create()
     echom 'EasyEnv: File created'
 endfunction
 
+function! easyenv#config#Clear() abort
+    if exists('g:easyenv_dotfile_envvars')
+        for key in g:easyenv_dotfile_envvars
+            execute 'let $' . key . ' = ""'
+        endfor
+        let g:easyenv_dotfile_envvars = []
+    endif
+endfunction
+
 function! easyenv#config#Load() abort
     let l:path = easyenv#config#Path()
 
@@ -28,7 +37,7 @@ function! easyenv#config#Load() abort
         return
     endif 
 
-    call easyenv#config#Unset()
+    call easyenv#config#Clear()
     call easyenv#config#Set(l:data.environment)
 endfunction
 
@@ -54,11 +63,3 @@ function! easyenv#config#Set(data) abort
     endfor
 endfunction
 
-function! easyenv#config#Unset() abort
-    if exists('g:easyenv_dotfile_envvars')
-        for key in g:easyenv_dotfile_envvars
-            execute 'let $' . key . ' = ""'
-        endfor
-        let g:easyenv_dotfile_envvars = []
-    endif
-endfunction
