@@ -6,6 +6,7 @@ let g:easyenv_loaded=1
 
 command! EasyEnvCreate call easyenv#Execute('Create')
 command! EasyEnvLoad call easyenv#Execute('Load')
+command! EasyEnvClear call easyenv#Execute('Clear')
 
 " ***** Default Configurations *****
 let g:easyenv_dotfile_config    = '.easyenv.json'
